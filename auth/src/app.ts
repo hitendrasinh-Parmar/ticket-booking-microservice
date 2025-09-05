@@ -2,14 +2,12 @@ import express from "express";
 import "express-async-errors";
 import { json } from "body-parser";
 import cookieSession from "cookie-session";
-import mongoose from "mongoose";
+import { errorHandler, NotFoundError } from "@jwt-auth-microsrv/common";
 
 import { CurrentUserRouter } from "./routes/current-user";
 import { SigninRouter } from "./routes/signin";
 import { SignoutRouter } from "./routes/signout";
 import { SignupRouter } from "./routes/signup";
-import { errorHandler } from "./middlewares/error-handler";
-import { NotFoundError } from "./errors/not-found-error";
 
 const app = express();
 
