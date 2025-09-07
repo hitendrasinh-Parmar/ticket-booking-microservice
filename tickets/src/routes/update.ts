@@ -7,6 +7,8 @@ import {
   NotAuthorizedError,
 } from "@jwt-auth-microsrv/common";
 import { Ticket } from "../models/ticket";
+import { TickerUpdatedPublisher } from "../events/publishers/ticker-updated-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -36,6 +38,13 @@ router.put(
       price: req.body.price,
     });
     await ticket.save();
+
+    new TickerUpdatedPublisher(natsWrapper.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+    });
 
     res.send(ticket);
   }
